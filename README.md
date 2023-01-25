@@ -1,5 +1,5 @@
-In one sentence describe what your program will do once completed?
+
 Once the Project is complete the user can play the snake game with multiple speed levels
 
-With your group, choose a programming language. What language are you using and why?
+
 We are choosing Python as a programming language to develop this GUI based application. Because python comes with variety of GUI Frameworks such as Tkinter, Kivy etc which keeps it simple and more interactive in developing GUI based applications also coding in python is relatively simple as it does not involve complex syntactic rules like other languages. 
