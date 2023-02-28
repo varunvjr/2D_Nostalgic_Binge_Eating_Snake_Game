@@ -113,7 +113,30 @@ window = tk.Tk()
 window.title("2D Binge Snake")
 score = 0
 direction = 'down'
-####################
+
+# Display of Points Scored in Game
+label = tk.Label(window, text="Points:{}".format(score),
+            font=('consolas', 20))
+label.pack()
+canvas = tk.Canvas(window, bg=BACKGROUND,
+                height=HEIGHT, width=WIDTH)
+canvas.pack()
+window.update()
+window_width = window.winfo_width()
+window_height = window.winfo_height()
+screen_width = window.winfo_screenwidth()
+screen_height = window.winfo_screenheight()
+x = int((screen_width/2) - (window_width/2))
+y = int((screen_height/2) - (window_height/2))
+window.geometry(f"{window_width}x{window_height}+{x}+{y}")
+window.bind('<Left>',
+            lambda event: change_direction('left'))
+window.bind('<Right>',
+            lambda event: change_direction('right'))
+window.bind('<Up>',
+            lambda event: change_direction('up'))
+window.bind('<Down>',
+            lambda event: change_direction('down'))
 timer_text = canvas.create_text(50, 10, text="Time: 0s", fill="black", font=("Arial", 16, "bold"))
 # Define a function to start the stopwatch
 def start_stopwatch():
