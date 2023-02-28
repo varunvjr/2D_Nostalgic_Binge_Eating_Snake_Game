@@ -35,9 +35,7 @@ def SnakeDisplay(snake):
                     y + SPACE_SIZE, fill=SNAKE)
         snake.squares.insert(0, square)
  
-#Trying to add food comp
-x = random.randint(0, WIDTH - FOOD)
-y = random.randint(0, HEIGHT - FOOD)
+
  
 # Initialize the stopwatch variables
 elapsed_time = 0
@@ -63,9 +61,6 @@ def stop_stopwatch():
 
 
 
-#Trying to add food comp
-x = random.randint(0, WIDTH - FOOD)
-y = random.randint(0, HEIGHT - FOOD)
 
 
 # Create a new window
@@ -77,7 +72,6 @@ window.title("Welcome to 2D snake game")
 # Set the size of the window
 canvas = tk.Canvas(window, bg=BACKGROUND,
                 height=HEIGHT, width=WIDTH)
-canvas.create_oval(x, y, x+FOOD, y+FOOD, fill="black")
 
 timer_text = canvas.create_text(50, 10, text="Time: 0s", fill="black", font=("Arial", 16, "bold"))
 
