@@ -1,12 +1,39 @@
 import tkinter as tk
 import random
+import pygame
 # 2d Snake Game Board Dimensions
 WIDTH = 1000
 HEIGHT = 700
 BACKGROUND = "#5af5aa"
 FOOD = 10
-
+BODY_SIZE = 200
+SPACE_SIZE = 20
+SNAKE = "#000000"
  
+# Create Snake
+
+class Snake:
+        def __init__(self):
+            pygame.init()
+         
+            self.body_size = BODY_SIZE
+            self.coordinates = []
+            self.squares = []
+            for i in range(0, BODY_SIZE):
+                self.coordinates.append([30, 30])
+            for x, y in self.coordinates:
+                square = canvas.create_rectangle(
+                    x, y, x + SPACE_SIZE, y + SPACE_SIZE,
+                        fill=SNAKE, tag="snake")
+                self.squares.append(square)
+
+def SnakeDisplay(snake):
+        x, y = snake.coordinates[100]
+        snake.coordinates.insert(0, (x, y))
+        square = canvas.create_rectangle(
+            x, y, x + SPACE_SIZE,
+                    y + SPACE_SIZE, fill=SNAKE)
+        snake.squares.insert(0, square)
  
 #Trying to add food comp
 x = random.randint(0, WIDTH - FOOD)
@@ -52,7 +79,7 @@ canvas = tk.Canvas(window, bg=BACKGROUND,
                 height=HEIGHT, width=WIDTH)
 canvas.create_oval(x, y, x+FOOD, y+FOOD, fill="black")
 
-timer_text = canvas.create_text(50, 50, text="Time: 0s", fill="black", font=("Arial", 16, "bold"))
+timer_text = canvas.create_text(50, 10, text="Time: 0s", fill="black", font=("Arial", 16, "bold"))
 
 canvas.pack()
 # Create a label widget and add it to the window
@@ -62,7 +89,13 @@ label.pack()
 # Start the stopwatch
 start_stopwatch()
 update_stopwatch()
+
+# Display Snake
+
+snake = Snake()
+SnakeDisplay(snake)
 # Run the window
+
 window.update()
 
 window.mainloop()
