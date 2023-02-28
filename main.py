@@ -1,46 +1,40 @@
 import tkinter as tk
 import random
-import pygame
 # 2d Snake Game Board Dimensions
 WIDTH = 1000
 HEIGHT = 700
-BACKGROUND = "#5af5aa"
-FOOD = 10
-BODY_SIZE = 200
+BACKGROUND = "#5AF5AA"
+SPEED = 200
+FOOD = "#FFFFFF"
+BODY_SIZE = 2
 SPACE_SIZE = 20
 SNAKE = "#000000"
- 
 # Create Snake
-
 class Snake:
         def __init__(self):
-            pygame.init()
-         
             self.body_size = BODY_SIZE
             self.coordinates = []
             self.squares = []
             for i in range(0, BODY_SIZE):
-                self.coordinates.append([30, 30])
+                self.coordinates.append([0, 0])
             for x, y in self.coordinates:
                 square = canvas.create_rectangle(
                     x, y, x + SPACE_SIZE, y + SPACE_SIZE,
                         fill=SNAKE, tag="snake")
                 self.squares.append(square)
-
-def SnakeDisplay(snake):
-        x, y = snake.coordinates[100]
-        snake.coordinates.insert(0, (x, y))
-        square = canvas.create_rectangle(
-            x, y, x + SPACE_SIZE,
-                    y + SPACE_SIZE, fill=SNAKE)
-        snake.squares.insert(0, square)
- 
-
- 
+  # Class to design the food
+class Food:
+    def __init__(self):
+        x = random.randint(0,
+                (WIDTH / SPACE_SIZE)-1) * SPACE_SIZE
+        y = random.randint(0,
+                (HEIGHT / SPACE_SIZE) - 1) * SPACE_SIZE
+        self.coordinates = [x, y]
+        canvas.create_oval(x, y, x + SPACE_SIZE, y +
+                        SPACE_SIZE, fill=FOOD, tag="food")
 # Initialize the stopwatch variables
 elapsed_time = 0
 timer_running = False
- 
 # Define a function to update the stopwatch
 def update_stopwatch():
     global elapsed_time, timer_running
@@ -48,49 +42,68 @@ def update_stopwatch():
         elapsed_time += 1
         canvas.itemconfig(timer_text, text="Time: {}s".format(elapsed_time))
     canvas.after(1000, update_stopwatch)
- 
+ # Function to check the next move of snake
+def next_turn(snake, food):
+    x, y = snake.coordinates[0]
+    if direction == "up":
+        y -= SPACE_SIZE
+    elif direction == "down":
+        y += SPACE_SIZE
+    elif direction == "left":
+        x -= SPACE_SIZE
+    elif direction == "right":
+        x += SPACE_SIZE
+    snake.coordinates.insert(0, (x, y))
+    square = canvas.create_rectangle(
+        x, y, x + SPACE_SIZE,
+                y + SPACE_SIZE, fill=SNAKE)
+    snake.squares.insert(0, square)
+    if x == food.coordinates[0] and y == food.coordinates[1]:
+        global score
+        score += 1
+        label.config(text="Points:{}".format(score))
+        canvas.delete("food")
+        food = Food()
+    else:
+        del snake.coordinates[-1]
+        canvas.delete(snake.squares[-1])
+        del snake.squares[-1]
+    if check_collisions(snake):
+        game_over()
+    else:
+        window.after(SPEED, next_turn, snake, food)
+# Function to control direction of snake
+def change_direction(new_direction):
+    global direction
+    if new_direction == 'left':
+        if direction != 'right':
+            direction = new_direction
+    elif new_direction == 'right':
+        if direction != 'left':
+            direction = new_direction
+    elif new_direction == 'up':
+        if direction != 'down':
+            direction = new_direction
+    elif new_direction == 'down':
+        if direction != 'up':
+            direction = new_direction
+# Giving title to the gaming window
+window = tk.Tk()
+window.title("2D Binge Snake")
+score = 0
+direction = 'down'
+timer_text = canvas.create_text(50, 10, text="Time: 0s", fill="black", font=("Arial", 16, "bold"))
 # Define a function to start the stopwatch
 def start_stopwatch():
     global timer_running
     timer_running = True
- 
 # Define a function to stop the stopwatch
 def stop_stopwatch():
     global timer_running
     timer_running = False
-
-
-
-
-
-# Create a new window
-window = tk.Tk()
- 
-# Set the title of the window
-window.title("Welcome to 2D snake game")
- 
-# Set the size of the window
-canvas = tk.Canvas(window, bg=BACKGROUND,
-                height=HEIGHT, width=WIDTH)
-
-timer_text = canvas.create_text(50, 10, text="Time: 0s", fill="black", font=("Arial", 16, "bold"))
-
-canvas.pack()
-# Create a label widget and add it to the window
-label = tk.Label(window, text="Binge Snake!")
-label.pack()
- 
-# Start the stopwatch
 start_stopwatch()
 update_stopwatch()
-
-# Display Snake
-
 snake = Snake()
-SnakeDisplay(snake)
-# Run the window
-
-window.update()
-
+food = Food()
+next_turn(snake, food)
 window.mainloop()
-
