@@ -1,5 +1,6 @@
 import tkinter as tk
 import random
+import pygame
 # 2d Snake Game Board Dimensions
 WIDTH = 1000
 HEIGHT = 700
@@ -9,9 +10,14 @@ FOOD = "#FFFFFF"
 BODY_SIZE = 2
 SPACE_SIZE = 20
 SNAKE = "#000000"
+score = 0
 # Create Snake
 class Snake:
         def __init__(self):
+            pygame.init()
+            pygame.mixer.init()
+            pygame.mixer.music.load("background.mp3")
+            pygame.mixer.music.play(-1)
             self.body_size = BODY_SIZE
             self.coordinates = []
             self.squares = []
@@ -101,17 +107,26 @@ def check_collisions(snake):
 # Function to control everything
 def game_over():
     canvas.delete()
+    global timer_running
+    timer_running = False
     canvas.create_text(canvas.winfo_width()/2,
                     canvas.winfo_height()/2,
                     font=('consolas', 70),
                     text="GAME OVER", fill="red",
                     tag="gameover")
+    
+    canvas.create_text(canvas.winfo_width()/2,
+                    canvas.winfo_height()/3,
+                    font=('consolas', 50),
+                    text="Your Score: {}".format(score), fill="green",
+                    tag="score")
+    
 
 
 # Giving title to the gaming window
 window = tk.Tk()
 window.title("2D Binge Snake")
-score = 0
+
 direction = 'down'
 
 # Display of Points Scored in Game
