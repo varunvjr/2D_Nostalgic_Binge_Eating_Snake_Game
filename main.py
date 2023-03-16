@@ -11,6 +11,7 @@ BODY_SIZE = 2
 SPACE_SIZE = 20
 SNAKE = "#000000"
 score = 0
+
 # Create Snake
 class Snake:
         def __init__(self):
@@ -106,6 +107,9 @@ def check_collisions(snake):
     return False
 # Function to control everything
 def game_over():
+    pygame.mixer.music.stop()
+    pygame.mixer.music.load("Endgame.mpeg")
+    pygame.mixer.music.play(-1)
     canvas.delete()
     global timer_running
     timer_running = False
